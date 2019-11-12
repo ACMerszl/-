@@ -13,11 +13,11 @@ public class Calculate {
 	
 	public static void view_1() { // 显示算式
 		System.out.println("**************************************************");
-		System.out.println("- 程序输出50道100以内的加减法算式的习题 -");
-		System.out.println("- 每次运行程序可得到一套50道题的习题及答案 -");
+		System.out.println("- 程序输出" + N + "道" + M + "以内的加减法算式的习题 -");
+		System.out.println("- 每次运行程序可得到一套" + N + "道题的习题及答案 -");
 		System.out.println("**************************************************");
 		System.out.println("");
-		for (int i = 1; i <= N; i++) { //输出算式
+		for (int i = 1; i <= N; i++) { 
 			System.out.printf("%3d", arrays_one[i]);
 			System.out.print(" " + arrays_op[i]);
 			System.out.printf("%3d", arrays_two[i]);
@@ -42,7 +42,8 @@ public class Calculate {
 				System.out.println("");
 		}
 	}
-	public static void main(String[] args) {
+	
+	public static void cal() { //计算
 		int cnt = 1; 
 		while(cnt <= N) {
 			Random r1 = new Random(); 
@@ -67,6 +68,10 @@ public class Calculate {
 			arrays_op[cnt] = optt;
 			cnt++;
 		}
+	}
+	
+	public static void main(String[] args) {
+		cal();
 		view_1();
 		view_2();
 	}

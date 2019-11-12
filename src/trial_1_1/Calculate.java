@@ -6,10 +6,10 @@ public class Calculate {
 	static int N = 50;
 	static int M = 100;
 	static boolean [][][] arrays_q = new boolean[M][M][2]; //去除重复的算式
-	static int [] arrays_one = new int[N]; // 存减数
-	static int [] arrays_two = new int[N]; // 存被减数
-	static char [] arrays_op = new char[N]; // 存运算符
-	static int [] arrays_ans = new int[N]; // 存答案
+	static int [] arrays_one = new int[N + 1]; // 存减数
+	static int [] arrays_two = new int[N + 1]; // 存被减数
+	static char [] arrays_op = new char[N + 1]; // 存运算符
+	static int [] arrays_ans = new int[N + 1]; // 存答案
 	
 	public static void view_1() { // 显示算式
 		System.out.println("**************************************************");

@@ -56,8 +56,6 @@ public class Calculate {
 			if (a + b > M || a - b < 0) continue; //中间过程不符合条件
 			arrays_one[cnt] = a;
 			arrays_two[cnt] = b;
-			arrays_q[a][b][opt] = true; //去重
-			if (opt == 0) arrays_q[b][a][opt] = true; // a + b = b + a
 			char optt;
 			if(opt == 0) {
 				optt = '+';

@@ -3,6 +3,11 @@ package trial_1_1;
 import java.util.*;
 
 public class Calculate {
+	/************************************************
+	数组存储说明
+	
+	************************************************/
+	
 	static int N = 50;
 	static int M = 100;
 	static boolean [][][] arrays_q = new boolean[M][M][2]; //去除重复的算式
@@ -11,6 +16,11 @@ public class Calculate {
 	static char [] arrays_op = new char[N + 1]; // 存运算符
 	static int [] arrays_ans = new int[N + 1]; // 存答案
 	
+	
+	/************************************************
+	该方法主要是整齐的显示算式
+	
+	************************************************/
 	public static void view_1() { // 显示算式
 		System.out.println("**************************************************");
 		System.out.println("- 程序输出" + N + "道" + M + "以内的加减法算式的习题 -");
@@ -27,6 +37,11 @@ public class Calculate {
 		}
 	}
 	
+	
+	/************************************************
+	该方法主要是整齐的带有答案的算式
+	
+	************************************************/
 	public static void view_2() { // 显示答案
 		System.out.println("");
 		System.out.println("**************************************************");
@@ -43,20 +58,42 @@ public class Calculate {
 		}
 	}
 	
-	public static void cal() { //计算
+	
+	/************************************************
+	该方法主要是获取随机数及运算符
+	
+	************************************************/
+	public static int getRandom(int x) {
+		Random r = new Random();
+		return r.nextInt(x);
+	}
+	
+	
+	/************************************************
+	该方法主要是判断生成的方法是否合法
+	
+	************************************************/
+	public static boolean check(int a, int b, int opt) {
+		if (arrays_q[a][b][opt]) return false; //已经出现过
+		if (a + b > M || a - b < 0) return false; //结果不符合条件
+		return true;
+	}
+	
+	
+	/************************************************
+	该方法主要是获取算式，并存储运算结果
+	
+	************************************************/
+	public static void cal() { 
 		int cnt = 1; 
 		while(cnt <= N) {
-			Random r1 = new Random(); 
-			Random r2 = new Random();
-			Random r3 = new Random();
-			int a = r1.nextInt(M); //获取减数
-			int b = r2.nextInt(M); // 获取被减数
-			int opt = r3.nextInt(2); //获取运算符
-			if (arrays_q[a][b][opt]) continue; 
-			if (a + b > M || a - b < 0) continue; //中间过程不符合条件
+			int a = getRandom(M); //获取减数
+			int b = getRandom(M); // 获取被减数
+			int opt = getRandom(2); //获取运算符
+			if (check(a, b, opt) == false) continue; // 不符合条件
 			arrays_one[cnt] = a;
 			arrays_two[cnt] = b;
-			arrays_q[a][b][opt] = true; //去重
+			arrays_q[a][b][opt] = true; //出现过
 			if (opt == 0) arrays_q[b][a][opt] = true; // a + b = b + a
 			char optt;
 			if(opt == 0) {
@@ -71,6 +108,7 @@ public class Calculate {
 			cnt++;
 		}
 	}
+	
 	
 	public static void main(String[] args) {
 		cal();

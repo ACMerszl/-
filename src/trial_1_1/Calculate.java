@@ -2,117 +2,220 @@ package trial_1_1;
 
 import java.util.*;
 
-public class Calculate {
-	/************************************************
-	数组存储说明
+class BinaryOperation {
 	
-	************************************************/
-	
-	static int N = 50;
-	static int M = 100;
-	static boolean [][][] arrays_q = new boolean[M][M][2]; //去除重复的算式
-	static int [] arrays_one = new int[N + 1]; // 存减数
-	static int [] arrays_two = new int[N + 1]; // 存被减数
-	static char [] arrays_op = new char[N + 1]; // 存运算符
-	static int [] arrays_ans = new int[N + 1]; // 存答案
+	/***************************************
+	 * 声明成员变量
+	 **************************************/
+	private static final int UPPER = 100;
+	private static final int LOWER = 0;
+	private int left_operand = 0;
+	private int right_operand = 0;
+	private int value = 0;
+	private char operator = '+';
 	
 	
-	/************************************************
-	该方法主要是整齐的显示算式
+	/***************************************
+	 *实际产生BinaryOperatation对象 
+	 ***************************************/
+	private void construct(int left, int right, char op) {
+		left_operand = left;
+		right_operand = right;
+		operator = op;
+		if (op == '+')
+			value = left + right;
+		else 
+			value = left - right;
+	}
 	
-	************************************************/
-	public static void view_1() { // 显示算式
-		System.out.println("**************************************************");
-		System.out.println("- 程序输出" + N + "道" + M + "以内的加减法算式的习题 -");
-		System.out.println("- 每次运行程序可得到一套" + N + "道题的习题及答案 -");
-		System.out.println("**************************************************");
-		System.out.println("");
-		for (int i = 1; i <= N; i++) { 
-			System.out.printf("%3d", arrays_one[i]);
-			System.out.print(" " + arrays_op[i]);
-			System.out.printf("%3d", arrays_two[i]);
-			System.out.print(" = ?  ");
-			if (i % 5 == 0) 
-				System.out.println("");
-		}
+	/*****************************************
+	 * 生成一个加法算式
+	 *****************************************/
+	public BinaryOperation generateAdditionOperation() {
+		Random random = new Random();
+		int left, right, result;
+		left = random.nextInt(UPPER + 1);
+		do {
+			right = random.nextInt(UPPER + 1);
+			result = left + right;
+		} while (result > UPPER);
+		BinaryOperation bop = new BinaryOperation();
+		bop.construct(left, right, '+');
+		return bop;
+	}
+	
+	/*****************************************
+	 * 生成一个减法算式
+	 *****************************************/
+	public BinaryOperation generateSubstractOperation() {
+		Random random = new Random();
+		int left, right, result;
+		left = random.nextInt(UPPER + 1);
+		do {
+			right = random.nextInt(UPPER + 1);
+			result = left + right;
+		} while (result < LOWER);
+		BinaryOperation bop = new BinaryOperation();
+		bop.construct(left, right, '-');
+		return bop;
+	}
+	
+	/*****************************************
+	 * 随机生成加减法算式
+	 *****************************************/
+	public BinaryOperation generateBinaryOperation() {
+		Random random = new Random();
+		int left, right, result, opt;
+		left = random.nextInt(UPPER + 1);
+		do {
+			right = random.nextInt(UPPER + 1);
+			result = left + right;
+		} while (result > UPPER || result < LOWER);
+		BinaryOperation bop = new BinaryOperation();
+		opt = random.nextInt(2);
+		if (opt == 0)  
+			bop.construct(left, right, '+');
+		else 
+			bop.construct(left, right, '-');
+		return bop;
+	}
+	
+	public int getLeftOperand() {
+		return left_operand;
+	}
+	
+	public int getRightOperand() {
+		return right_operand;
+	}
+	
+	public char getOperator() {
+		return operator;
+	}
+	
+	public int getResult() {
+		return value;
+	}
+	
+	/*****************************************
+	 * 比较对象是否相同
+	 *****************************************/
+	public boolean equals (BinaryOperation anOperation) {
+		return left_operand == anOperation.left_operand && 
+			   right_operand == anOperation.getRightOperand() && 
+			   operator == anOperation.getOperator();
 	}
 	
 	
-	/************************************************
-	该方法主要是整齐的带有答案的算式
-	
-	************************************************/
-	public static void view_2() { // 显示答案
-		System.out.println("");
-		System.out.println("**************************************************");
-		System.out.println("- 下面是习题的参考答案");
-		System.out.println("**************************************************");
-		System.out.println("");
-		for (int i = 1; i <= N; i++) { 
-			System.out.printf("%3d", arrays_one[i]);
-			System.out.print(" " + arrays_op[i]);
-			System.out.printf("%3d", arrays_two[i]);
-			System.out.printf(" = %d\t", arrays_ans[i]);
-			if (i % 5 == 0) 
-				System.out.println("");
-		}
+	public String asString() {
+		String left, right, str;
+		left = String.format("%3d", left_operand);
+		right = String.format("%3d", right_operand);	
+		str = left + " " + operator + " " + right + " = \t";
+		return str; 
 	}
 	
-	
-	/************************************************
-	该方法主要是获取随机数及运算符
-	
-	************************************************/
-	public static int getRandom(int x) {
-		Random r = new Random();
-		return r.nextInt(x);
+	public String fullString() {
+		String left, right, str;
+		left = String.format("%3d", left_operand);
+		right = String.format("%3d", right_operand);	
+		str = left + " " + operator + " " + right + " = ?\t";
+		return str; 
 	}
 	
+}
+
+
+class Exercise {
+	/*****************************************
+	 * 定义题目总量以及输出格式，使用对象数组存储算式
+	 *****************************************/
+	private static final int OPERATION_NUMBER = 50;
+	private static final int COLOMU_NUMBER = 5;
+	private BinaryOperation operationList[] = new BinaryOperation[OPERATION_NUMBER];
 	
-	/************************************************
-	该方法主要是判断生成的方法是否合法
-	
-	************************************************/
-	public static boolean check(int a, int b, int opt) {
-		if (arrays_q[a][b][opt]) return false; //已经出现过
-		if (a + b > M || a - b < 0) return false; //结果不符合条件
-		return true;
-	}
-	
-	
-	/************************************************
-	该方法主要是获取算式，并存储运算结果
-	
-	************************************************/
-	public static void cal() { 
-		int cnt = 1; 
-		while(cnt <= N) {
-			int a = getRandom(M); //获取减数
-			int b = getRandom(M); // 获取被减数
-			int opt = getRandom(2); //获取运算符
-			if (check(a, b, opt) == false) continue; // 不符合条件
-			arrays_one[cnt] = a;
-			arrays_two[cnt] = b;
-			arrays_q[a][b][opt] = true; //出现过
-			if (opt == 0) arrays_q[b][a][opt] = true; // a + b = b + a
-			char optt;
-			if(opt == 0) {
-				optt = '+';
-				arrays_ans[cnt] = a + b;
+	/*****************************************
+	 *获取一套不重复的加减法混合练习题
+	 *****************************************/
+	public void generateBinaryExercise() {
+		BinaryOperation anOperation, opCreator = new BinaryOperation();
+		for (int i = 0; i < OPERATION_NUMBER; i++) {
+			anOperation = opCreator.generateBinaryOperation();
+			while (contains(anOperation, i - 1)) {
+				anOperation = opCreator.generateBinaryOperation();
 			}
-			else {
-				optt = '-';
-				arrays_ans[cnt] = a - b;
-			}
-			arrays_op[cnt] = optt;
-			cnt++;
+			operationList[i] = anOperation;
 		}
 	}
 	
+	/*****************************************
+	 *获取一套不重复的加法混合练习题
+	 *****************************************/
+	public void generateAdditExercise() {
+		BinaryOperation anOperation, opCreator = new BinaryOperation();
+		for (int i = 0; i < OPERATION_NUMBER; i++) {
+			anOperation = opCreator.generateBinaryOperation();
+			while (contains(anOperation, i - 1)) {
+				anOperation = opCreator.generateBinaryOperation();
+			}
+			operationList[i] = anOperation;
+		}
+	}
 	
-	public static void main(String[] args) {
-		cal();
-		view_1();
-		view_2();
+	/*****************************************
+	 *获取一套不重复的减法混合练习题
+	 *****************************************/
+	public void generateSubstractExercise() {
+		BinaryOperation anOperation, opCreator = new BinaryOperation();
+		for (int i = 0; i < OPERATION_NUMBER; i++) {
+			anOperation = opCreator.generateBinaryOperation();
+			while (contains(anOperation, i - 1)) {
+				anOperation = opCreator.generateBinaryOperation();
+			}
+			operationList[i] = anOperation;
+		}
+	}
+	
+	/*****************************************
+	 *检查是否之前出现过
+	 *****************************************/
+	private boolean contains(BinaryOperation anOperation, int length) {
+		boolean found = false;
+		for (int i = 0; i <= length; i++) {
+			if (anOperation.equals(operationList[i])) {
+				found = true;
+				break;
+			}
+		}
+		return found;
+	}
+	
+	/*****************************************
+	 *格式化输出
+	 *****************************************/
+	void formateAndDisplay() {
+		System.out.println("生成的练习题目如下：");
+		System.out.println("------------------------------------------------");
+		for (int i = 0; i < OPERATION_NUMBER; i++) {
+			System.out.print(operationList[i].asString());
+			if ((i + 1) % COLOMU_NUMBER == 0) System.out.println("");
+		}
+		
+		System.out.println("");
+		System.out.println("练习题答案：");
+		System.out.println("------------------------------------------------");
+		for (int i = 0; i < OPERATION_NUMBER; i++) {
+			System.out.print(operationList[i].fullString());
+			if ((i + 1) % COLOMU_NUMBER == 0) System.out.println("");
+		}
+	}
+	
+}
+
+class Calculate {
+	public static void main(String args[]) {
+		Exercise ex = new Exercise();
+		ex.generateBinaryExercise();
+		ex.formateAndDisplay();
 	}
 }
+
